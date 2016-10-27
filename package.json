@@ -1,0 +1,24 @@
+{
+  "name": "lordfirst",
+  "version": "0.1.0",
+  "description": "looks up novels mentioned in /r/noveltranslations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rutledka/lordfirst.git"
+  },
+  "author": "rutledka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rutledka/lordfirst/issues"
+  },
+  "homepage": "https://github.com/rutledka/lordfirst#readme",
+  "devDependencies": {
+    "axios": "^0.15.2",
+    "lodash": "^4.16.4",
+    "snoocore": "^3.3.1"
+  }
+}
