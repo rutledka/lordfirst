@@ -11,6 +11,7 @@ const api = require('./client');
 */
 const _VER_ = '0.1.0';
 const subreddit = '/r/noveltranslations';
+const regex = /\[\[[\w\s`~\!\@\#\$\%\^\&\*\(\)\-\_\=\+\{\}\\\|\;\:\'\"\,\<\.\>\/\?]+\]\]/g;
 const config = {
   userAgent : '/u/lordfirst LordFirstApp@' + _VER_ + ' SEVENTH MOUNTAIN AND SEA',
   clientId : api.id,
@@ -37,10 +38,16 @@ const reddit = new snoowrap({
 //   console.log(error);
 // });
 
-reddit.getSubmission('59knh9').fetch().then((submission) => {
-  console.log(submission.comments);
-})
+// reddit.getSubmission('59knh9').fetch().then((submission) => {
+//   console.log(submission);
+// })
 
+getComments('/r/testingground4bots').then((result) => {
+  console.log(result);
+  result.map((comment) => {
+    reddit.getComment(comment.id).reply('This is a bot reply to this post.');
+  });
+});
 
 /*
 * Classes
@@ -51,5 +58,40 @@ reddit.getSubmission('59knh9').fetch().then((submission) => {
 */
 
 function getComments(permalink) {
-  console.log(permalink);
+  var matches;
+  const getNewComments = reddit.getSubreddit(permalink).getNewComments({ limit : 5 });
+
+  matches = getNewComments.then((comments) => {
+    let filteredComments = comments.filter((comment) => {
+      return comment.body.search(regex) != -1; // -1 : regex not found
+    });
+    return filteredComments;
+  }, (error) => {
+    console.dir(error);
+    return error;
+  });
+  return matches;
+  // return a promise that resolve to an array of objects?? I don't know if this is the right to to handle this
+}
+
+function lookupPhrase() {
+
+}
+
+function generateMessage(status, novel = {}) {
+  switch(status) {
+    case 0 : // phrase not found
+
+      break;
+
+    case 1 : // phrase found
+      break;
+
+    default :
+
+  }
+}
+
+function submitReply() {
+
 }
