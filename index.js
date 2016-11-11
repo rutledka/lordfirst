@@ -3,6 +3,7 @@
 */
 const snoowrap = require('snoowrap');
 const _ = require('lodash');
+const mongo = require('mongodb');
 const api = require('./client');
 
 
@@ -13,12 +14,26 @@ const _VER_ = '0.1.0';
 const subreddit = '/r/noveltranslations';
 const regex = /\[\[[\w\s`~\!\@\#\$\%\^\&\*\(\)\-\_\=\+\{\}\\\|\;\:\'\"\,\<\.\>\/\?]+\]\]/g;
 const config = {
-  userAgent : '/u/lordfirst LordFirstApp@' + _VER_ + ' SEVENTH MOUNTAIN AND SEA',
+  userAgent : '/u/lordfirst LordFirstApp@' + _VER_ + ' SEVENTH MOUNTAIN AND SEA created by /u/rutledka',
   clientId : api.id,
   clientSecret : api.secretKey,
   username: api.username,
   password: api.password
 }
+
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/test';
+
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  db.close();
+});
 
 // Our snoocore instantiation
 const reddit = new snoowrap({
@@ -42,16 +57,19 @@ const reddit = new snoowrap({
 //   console.log(submission);
 // })
 
-getComments('/r/testingground4bots').then((result) => {
-  console.log(result);
-  result.map((comment) => {
-    reddit.getComment(comment.id).reply('This is a bot reply to this post.');
-  });
-});
+// Our initial calls will go here
+
+// getComments('/r/testingground4bots').then((comments) => {
+//   console.log(comments);
+//   comments.map((comment) => {
+//     reddit.getComment(comment.id).reply('This is a scripted reply to this post.');
+//   });
+// });
 
 /*
 * Classes
 */
+
 
 /*
 * Functions
@@ -66,8 +84,8 @@ function getComments(permalink) {
       return comment.body.search(regex) != -1; // -1 : regex not found
     });
     return filteredComments;
-  }, (error) => {
-    console.dir(error);
+  }).catch((error) => {
+    console.error(error);
     return error;
   });
   return matches;
